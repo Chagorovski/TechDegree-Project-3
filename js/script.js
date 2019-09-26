@@ -321,3 +321,22 @@ function validateCVV() {
     }
   };
 };
+
+/***************************************************************** 
+  Form Event Checks that each field has the correct information
+  If the form has empty fields can't submit,and registration fails
+******************************************************************/
+$('form').on('submit', function (e){
+  if (validateName() === false || validateEmail() === false || validateActivity() === false || validateCreditCard() === false || validateCVV() === false || validateZip() === false) {
+      e.preventDefault();
+      validateName();
+      validateEmail();
+      validateActivity();
+      validateCreditCard();
+      validateZip();
+      validateCVV();
+      alert('Registration not accepted'); 
+  } else {
+      alert("Registration accepted");
+  }
+});

@@ -179,66 +179,26 @@ $ccErrorMsg.hide();
 $zipErrorMsg.hide();
 $cvvErrorMsg.hide();
  
-// Performing focusout on the inputs
+// Performing focusout on the inputs and validating with validateSubmit() function
 $('#name').focusout(function () {
-  validateName();
+  validateSubmit(/^[a-zA-Z]*$/, $('#name'),$nameErrorMsg,"Name field can't be blank","Name should contain only Characters");
 });
 $('#mail').focusout(function () {
-  validateEmail();
+  validateSubmit(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format");
 });
 $('#cc-num').focusout(function () {
-  validateCreditCard();
+  validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers");
 });
 $('#zip').focusout(function () {
-  validateZip();
+  if ($crediCard.prop('selected')) {
+      validateSubmit(/^[0-9]{5}$/, $('#zip'),$zipErrorMsg,"Insert Zip Code","Insert 5 digits");
+  }
 });
 $('#cvv').focusout(function () {
-  validateCVV();
+  if ($crediCard.prop('selected')) {
+      validateSubmit(/^[0-9]{3}$/, $('#cvv'),$cvvErrorMsg,"Insert CVV Code","Insert 3 digits");
+  }
 });
-
-// Name can't be blank and should contain only characters
-function validateName() {
-  var pattern = /^[a-zA-Z]*$/;
-  var fname = $("#name").val();
-  $('#name').after($nameErrorMsg);
-
-  if (pattern.test(fname) && fname !== '') {
-      $nameErrorMsg.hide();
-      $("#name").css("border-bottom","2px solid #34F458");
-      return false;
-  } else if (fname === ''){
-      $nameErrorMsg.html("Name field can't be blank");
-      $nameErrorMsg.show();
-      $("#name").css("border-bottom","2px solid #F90A0A");
-  } else {
-      $nameErrorMsg.html("Name should contain only Characters");
-      $nameErrorMsg.show();
-      $("#name").css("border-bottom","2px solid #F90A0A");
-      return true;
-  }
-};
-
-// Email schould have proper format
-function validateEmail() {
-  var pattern = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-  var email = $("#mail").val();
-  $('#mail').after($emailErrorMsg);
-
-  if (pattern.test(email) && email !== '') {
-      $emailErrorMsg.hide();
-      $("#mail").css("border-bottom","2px solid #34F458");
-      return false;
-  } else if (email === ''){
-      $emailErrorMsg.html("Email field is blank");
-      $emailErrorMsg.show();
-      $("#mail").css("border-bottom","2px solid #F90A0A");
-  } else {
-      $emailErrorMsg.html("Invalid Email Format");
-      $emailErrorMsg.show();
-      $("#mail").css("border-bottom","2px solid #F90A0A");
-      return true;
-  }
-};
 
 // Activity validation if user don't check any field
 function validateActivity () {
@@ -254,72 +214,26 @@ function validateActivity () {
   }
 };
 
-// Credit Card validatioon user should type 13-16 digits
-function validateCreditCard() {
-  var pattern = /^[0-9]{13,16}$/;
-  var cCard = $("#cc-num").val();
-  $('#cc-num').after($ccErrorMsg);
+// Validate main function
+function validateSubmit (regex,selectItem,selectError,errorMsgElif,errorMsgElse) {
+  var pattern = regex;
+  var tested = selectItem.val();
+  selectItem.after(selectError);
 
-  if (pattern.test(cCard) && cCard !== '') {
-      $ccErrorMsg.hide();
-      $("#cc-num").css("border-bottom","2px solid #34F458");
+  if (pattern.test(tested) && tested !== '') {
+      selectError.hide();
+      selectItem.css("border-bottom","2px solid #34F458");
       return false;
-  } else if (cCard === ''){
-      $ccErrorMsg.html("Insert Card Number");
-      $ccErrorMsg.show();
-      $("#cc-num").css("border-bottom","2px solid #F90A0A");
+  } else if (tested === ''){
+      selectError.html(errorMsgElif);
+      selectError.show();
+      selectItem.css("border-bottom","2px solid #F90A0A");
   } else {
-      $ccErrorMsg.html("Insert minimum 13 numbers");
-      $ccErrorMsg.show();
-      $("#cc-num").css("border-bottom","2px solid #F90A0A");
+      selectError.html(errorMsgElse);
+      selectError.show();
+      selectItem.css("border-bottom","2px solid #F90A0A");
       return true;
   }
-}; 
-
-// Zip code Validation if the Credic Card payment is selected
-function validateZip() {
-  var pattern = /^[0-9]{5}$/;
-  var zipCode = $("#zip").val();
-  $('#zip').after($zipErrorMsg);
-  if ($crediCard.prop('selected')) {
-    if (pattern.test(zipCode) && zipCode !== '') {
-        $zipErrorMsg.hide();
-        $("#zip").css("border-bottom","2px solid #34F458");
-        return false;
-    } else if (zipCode === ''){
-        $zipErrorMsg.html("Insert Zip Code");
-        $zipErrorMsg.show();
-        $("#zip").css("border-bottom","2px solid #F90A0A");
-    } else {
-        $zipErrorMsg.html("Insert 5 digits");
-        $zipErrorMsg.show();
-        $("#zip").css("border-bottom","2px solid #F90A0A");
-        return true;
-    }
-  };
-};
-
-// Cvv Validation,field should contain 3 numbers
-function validateCVV() {
-  var pattern = /^[0-9]{3}$/;
-  var cvvCode = $("#cvv").val();
-  $('#cvv').after($cvvErrorMsg);
-  if ($crediCard.prop('selected')) {
-    if (pattern.test(cvvCode) && cvvCode !== '') {
-        $cvvErrorMsg.hide();
-        $("#cvv").css("border-bottom","2px solid #34F458");
-        return false;
-    } else if (cvvCode === ''){
-        $cvvErrorMsg.html("Insert CVV Code");
-        $cvvErrorMsg.show();
-        $("#cvv").css("border-bottom","2px solid #F90A0A");
-    } else {
-        $cvvErrorMsg.html("Insert 3 digits");
-        $cvvErrorMsg.show();
-        $("#cvv").css("border-bottom","2px solid #F90A0A");
-        return true;
-    }
-  };
 };
 
 /***************************************************************** 
@@ -327,14 +241,9 @@ function validateCVV() {
   If the form has empty fields can't submit,and registration fails
 ******************************************************************/
 $('form').on('submit', function (e){
-  if (validateName() === false || validateEmail() === false || validateActivity() === false || validateCreditCard() === false || validateCVV() === false || validateZip() === false) {
+  if (validateSubmit() === false) {
       e.preventDefault();
-      validateName();
-      validateEmail();
       validateActivity();
-      validateCreditCard();
-      validateZip();
-      validateCVV();
       alert('Registration not accepted'); 
   } else {
       alert("Registration accepted");

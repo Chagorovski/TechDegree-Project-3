@@ -178,7 +178,7 @@ $activityErrorMsg.hide();
 $ccErrorMsg.hide();
 $zipErrorMsg.hide();
 $cvvErrorMsg.hide();
- 
+
 // Performing focusout on the inputs and validating with validateSubmit() function
 $('#name').focusout(function () {
   validateSubmit(/^[a-zA-Z]*$/, $('#name'),$nameErrorMsg,"Name field can't be blank","Name should contain only Characters");
@@ -232,7 +232,6 @@ function validateSubmit (regex,selectItem,selectError,errorMsgElif,errorMsgElse)
       selectError.html(errorMsgElse);
       selectError.show();
       selectItem.css("border-bottom","2px solid #F90A0A");
-      return true;
   }
 };
 
@@ -241,11 +240,6 @@ function validateSubmit (regex,selectItem,selectError,errorMsgElif,errorMsgElse)
   If the form has empty fields can't submit,and registration fails
 ******************************************************************/
 $('form').on('submit', function (e){
-  if (validateSubmit() === false) {
-      e.preventDefault();
-      validateActivity();
-      alert('Registration not accepted'); 
-  } else {
-      alert("Registration accepted");
-  }
+
+
 });

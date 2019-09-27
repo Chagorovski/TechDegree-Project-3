@@ -274,12 +274,6 @@ $('form').on('submit',function (e){
   } else if ($paymentInfo.val() === 'Bitcoin') {
       $('#paypal').attr('required',false);
   };
-
-  timedRefresPage(10000);
 });
 
-// Function to refresh the page 
-function timedRefresPage(t) {
-  setTimeout("location.reload(true);", t);
-};
 

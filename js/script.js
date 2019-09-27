@@ -239,7 +239,36 @@ function validateSubmit (regex,selectItem,selectError,errorMsgElif,errorMsgElse)
   Form Event Checks that each field has the correct information
   If the form has empty fields can't submit,and registration fails
 ******************************************************************/
-$('form').on('submit', function (e){
+$('form').on('submit',function (e){
+  e.preventDefault();
+  var name = $('#name').val();
+  var mail = $('#mail').val();
+  
+  if (name.length < 1) {
+      validateSubmit(/^[a-zA-Z]*$/, $('#name'),$nameErrorMsg,"Name field can't be blank","Name should contain only Characters");
+  } else {
+      $nameErrorMsg.hide();
+  };
 
+  if (mail.length < 1) {
+      validateSubmit(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format");
+  } else {
+      $emailErrorMsg.hide();
+  };
 
+  if ($('.activities input[type=checkbox]:checked').length !== 2) {
+      validateActivity ();
+  } else {
+      $activityErrorMsg.hide();
+  };
+
+  if ($paymentInfo.val() === 'Credit Card') {
+      validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers");
+      validateSubmit(/^[0-9]{5}$/, $('#zip'),$zipErrorMsg,"Insert Zip Code","Insert 5 digits");
+      validateSubmit(/^[0-9]{3}$/, $('#cvv'),$cvvErrorMsg,"Insert CVV Code","Insert 3 digits");
+  } else if ($paymentInfo.val() === 'Paypal') {
+      $('#bitcoin').attr('required',false);
+  } else if ($paymentInfo.val() === 'Bitcoin') {
+      $('#paypal').attr('required',false);
+  };
 });

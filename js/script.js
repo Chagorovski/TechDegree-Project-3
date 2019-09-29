@@ -205,7 +205,7 @@ $('#cvv').focusout(function () {
 function validateActivity () {
   $('.activities').append($activityErrorMsg);
 
-  if ($activityCheckbox.is(':checked') > 0) {
+  if ($activityCheckbox.is(':checked') === 0) {
       $activityErrorMsg.hide();
       return true;
   } else {

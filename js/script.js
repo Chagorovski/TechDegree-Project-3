@@ -13,7 +13,8 @@ const $otherTitle =  $("#other-title");
 const $designField = $('#design');
 const $colorField = $('#color');
 const $colorLabel = $('#colors-js-puns label');
-const $totalActivityLabel = $('<span></span>').css('color','darkred'); 
+const $totalActivityLabel = $('<span></span>').css('color','darkred');
+var $activityCheckbox = $('input[type=checkbox]');
 
 /*******************************
  Focus method to the firs input
@@ -204,13 +205,13 @@ $('#cvv').focusout(function () {
 function validateActivity () {
   $('.activities').append($activityErrorMsg);
 
-  if ($totalActivityCost === 0) {
+  if ($activityCheckbox.is(':checked') > 0) {
+      $activityErrorMsg.hide();
+      return true;
+  } else {
       $activityErrorMsg.html('You have to choose at least one activity');
       $activityErrorMsg.show();
       return false;
-  } else {
-      $activityErrorMsg.hide();
-      return true;
   }
 };
 
@@ -239,8 +240,8 @@ function validateSubmit (regex,selectItem,selectError,errorMsgElif,errorMsgElse)
   Form Event Checks that each field has the correct information
   If the form has empty fields can't submit,and registration fails
 ******************************************************************/
-$('form').on('submit',function (e){
-  // e.preventDefault();
+
+$('form').submit(function (e){
   var name = $('#name').val();
   var mail = $('#mail').val();
   
@@ -258,7 +259,7 @@ $('form').on('submit',function (e){
       $emailErrorMsg.hide();
   };
 
-  if ($('.activities input[type=checkbox]:checked').length !== 1) {
+  if ($('.activities input[type=checkbox]:checked').length === 0) {
       e.preventDefault();
       validateActivity ();
   } else {
@@ -266,16 +267,13 @@ $('form').on('submit',function (e){
   };
 
   if ($paymentInfo.val() === 'Credit Card') {
+      e.preventDefault();
       validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers");
       validateSubmit(/^[0-9]{5}$/, $('#zip'),$zipErrorMsg,"Insert Zip Code","Insert 5 digits");
       validateSubmit(/^[0-9]{3}$/, $('#cvv'),$cvvErrorMsg,"Insert CVV Code","Insert 3 digits");
-  } else if ($paymentInfo.val() === 'Paypal') {
+  } else if ($paymentInfo.val() === 'PayPal') {
       $('#bitcoin').attr('required',false);
   } else if ($paymentInfo.val() === 'Bitcoin') {
       $('#paypal').attr('required',false);
-  } else {
-      e.preventDefault();
   };
 });
-
-

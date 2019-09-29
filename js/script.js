@@ -204,7 +204,7 @@ $('#cvv').focusout(function () {
 function validateActivity () {
   $('.activities').append($activityErrorMsg);
 
-  if ($('.activities input[type=checkbox]:checked').length === 0) {
+  if ($totalActivityCost === 0) {
       $activityErrorMsg.html('You have to choose at least one activity');
       $activityErrorMsg.show();
       return false;
@@ -240,6 +240,7 @@ function validateSubmit (regex,selectItem,selectError,errorMsgElif,errorMsgElse)
   If the form has empty fields can't submit,and registration fails
 ******************************************************************/
 $('form').on('submit',function (e){
+  // e.preventDefault();
   var name = $('#name').val();
   var mail = $('#mail').val();
   
@@ -257,7 +258,7 @@ $('form').on('submit',function (e){
       $emailErrorMsg.hide();
   };
 
-  if ($('.activities input[type=checkbox]:checked').length !== 2) {
+  if ($('.activities input[type=checkbox]:checked').length !== 1) {
       e.preventDefault();
       validateActivity ();
   } else {
@@ -265,7 +266,6 @@ $('form').on('submit',function (e){
   };
 
   if ($paymentInfo.val() === 'Credit Card') {
-      e.preventDefault();
       validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers");
       validateSubmit(/^[0-9]{5}$/, $('#zip'),$zipErrorMsg,"Insert Zip Code","Insert 5 digits");
       validateSubmit(/^[0-9]{3}$/, $('#cvv'),$cvvErrorMsg,"Insert CVV Code","Insert 3 digits");
@@ -273,6 +273,8 @@ $('form').on('submit',function (e){
       $('#bitcoin').attr('required',false);
   } else if ($paymentInfo.val() === 'Bitcoin') {
       $('#paypal').attr('required',false);
+  } else {
+      e.preventDefault();
   };
 });
 

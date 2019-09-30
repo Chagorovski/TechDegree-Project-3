@@ -184,7 +184,7 @@ $('#name').focusout(function () {
   validateSubmit(/^[a-zA-Z]*$/, $('#name'),$nameErrorMsg,"Name field can't be blank","Name should contain only Characters");
 });
 $('#mail').focusout(function () {
-  validateSubmit(/^\S+@\S+$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format");
+  validateSubmit(/^\S+@\S+\.\S+$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format");
 });
 $('#cc-num').focusout(function () {
   validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers");
@@ -250,7 +250,7 @@ $('form').submit(function (e){
       $nameErrorMsg.hide();
   };
 
-  if (!validateSubmit(/^\S+@\S+$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format")) {
+  if (!validateSubmit(/^\S+@\S+\.\S+$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format")) {
       e.preventDefault();
   } else {
       $emailErrorMsg.hide();

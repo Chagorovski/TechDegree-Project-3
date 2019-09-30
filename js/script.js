@@ -100,12 +100,12 @@ $('.activities').change((event) => {
     let $stringToNumber = $getDataCosts.replace(/\D/g,'');
     
     if ($clickedInputElement.is(':checked')) {
-        let calculate = parseInt($stringToNumber,10);
+        let calculate = parseInt($stringToNumber,10);   
         $totalActivityCost = $totalActivityCost + calculate;
         $totalActivityLabel.show();
-    }else {
+    } else {
         let calculate = parseInt($stringToNumber,10);
-        $totalActivityCost = $totalActivityCost - calculate;
+        $totalActivityCost = $totalActivityCost - calculate;  
         $totalActivityLabel.show();
     };
 // Adding the total price <span> and hidding when the cost is 0
@@ -114,7 +114,6 @@ $('.activities').change((event) => {
     if ($totalActivityLabel.text() === 'Total: $0') {
         $totalActivityLabel.hide();
     };
-
     let $dayAndTime = $clickedInputElement.attr('data-day-and-time');
     
 // Disabling conflicting activities
@@ -124,7 +123,7 @@ $('.activities').change((event) => {
         if ($clickedInputElement.prop('checked') === true) {
             $justClickedActivity.attr('disabled',true);
             $clickedInputElement.attr('disabled',false);
-        }else {
+        } else {
             $justClickedActivity.attr('disabled',false);
             $clickedInputElement.attr('disabled',false);
         }
@@ -265,10 +264,21 @@ $('form').submit(function (e){
   };
 
   if ($paymentInfo.val() === 'Credit Card') {
-      e.preventDefault();
-      validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers");
-      validateSubmit(/^[0-9]{5}$/, $('#zip'),$zipErrorMsg,"Insert Zip Code","Insert 5 digits");
-      validateSubmit(/^[0-9]{3}$/, $('#cvv'),$cvvErrorMsg,"Insert CVV Code","Insert 3 digits");
+     if (!validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers")){
+        e.preventDefault();
+     } else {
+        $ccErrorMsg.hide();
+     };
+     if (!validateSubmit(/^[0-9]{5}$/, $('#zip'),$zipErrorMsg,"Insert Zip Code","Insert 5 digits")) {
+        e.preventDefault();
+     } else {
+        $zipErrorMsg.hide();
+     };
+     if (!validateSubmit(/^[0-9]{3}$/, $('#cvv'),$cvvErrorMsg,"Insert CVV Code","Insert 3 digits")) {
+        e.preventDefault();
+     } else {
+        $cvvErrorMsg.hide();
+     };  
   } else if ($paymentInfo.val() === 'PayPal') {
       $('#bitcoin').attr('required',false);
   } else if ($paymentInfo.val() === 'Bitcoin') {

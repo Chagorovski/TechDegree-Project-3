@@ -185,7 +185,7 @@ $('#name').focusout(function () {
   validateSubmit(/^[a-zA-Z]*$/, $('#name'),$nameErrorMsg,"Name field can't be blank","Name should contain only Characters");
 });
 $('#mail').focusout(function () {
-  validateSubmit(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format");
+  validateSubmit(/^\S+@\S+$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format");
 });
 $('#cc-num').focusout(function () {
   validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers");
@@ -224,15 +224,17 @@ function validateSubmit (regex,selectItem,selectError,errorMsgElif,errorMsgElse)
   if (pattern.test(tested) && tested !== '') {
       selectError.hide();
       selectItem.css("border-bottom","2px solid #34F458");
-      return false;
+      return true;
   } else if (tested === ''){
       selectError.html(errorMsgElif);
       selectError.show();
       selectItem.css("border-bottom","2px solid #F90A0A");
+      return false;
   } else {
       selectError.html(errorMsgElse);
       selectError.show();
       selectItem.css("border-bottom","2px solid #F90A0A");
+      return false;
   }
 };
 
@@ -242,19 +244,15 @@ function validateSubmit (regex,selectItem,selectError,errorMsgElif,errorMsgElse)
 ******************************************************************/
 
 $('form').submit(function (e){
-  var name = $('#name').val();
-  var mail = $('#mail').val();
-  
-  if (name.length < 1) {
+ 
+  if (!validateSubmit(/^[a-zA-Z]*$/, $('#name'),$nameErrorMsg,"Name field can't be blank","Name should contain only Characters")) {
       e.preventDefault();
-      validateSubmit(/^[a-zA-Z]*$/, $('#name'),$nameErrorMsg,"Name field can't be blank","Name should contain only Characters");
   } else {
       $nameErrorMsg.hide();
   };
 
-  if (mail.length < 1) {
+  if (!validateSubmit(/^\S+@\S+$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format")) {
       e.preventDefault();
-      validateSubmit(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format");
   } else {
       $emailErrorMsg.hide();
   };

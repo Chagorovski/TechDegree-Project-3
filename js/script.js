@@ -180,21 +180,21 @@ $zipErrorMsg.hide();
 $cvvErrorMsg.hide();
 
 // Performing focusout on the inputs and validating with validateSubmit() function
-$('#name').focusout(function () {
+$('#name').keyup(function () {
   validateSubmit(/^[a-zA-Z]*$/, $('#name'),$nameErrorMsg,"Name field can't be blank","Name should contain only Characters");
 });
-$('#mail').focusout(function () {
+$('#mail').keyup(function () {
   validateSubmit(/^\S+@\S+\.\S+$/, $('#mail'),$emailErrorMsg,"Email field is blank","Invalid Email Format");
 });
-$('#cc-num').focusout(function () {
+$('#cc-num').keyup(function () {
   validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers");
 });
-$('#zip').focusout(function () {
+$('#zip').keyup(function () {
   if ($crediCard.prop('selected')) {
       validateSubmit(/^[0-9]{5}$/, $('#zip'),$zipErrorMsg,"Insert Zip Code","Insert 5 digits");
   }
 });
-$('#cvv').focusout(function () {
+$('#cvv').keyup(function () {
   if ($crediCard.prop('selected')) {
       validateSubmit(/^[0-9]{3}$/, $('#cvv'),$cvvErrorMsg,"Insert CVV Code","Insert 3 digits");
   }
@@ -213,6 +213,11 @@ function validateActivity () {
       return false;
   }
 };
+
+// Adding listener if any checkbox is checked, hide the error-msg
+$activityCheckbox.click(function () {
+    $activityErrorMsg.hide();
+})
 
 // Validate main function
 function validateSubmit (regex,selectItem,selectError,errorMsgElif,errorMsgElse) {

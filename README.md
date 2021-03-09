@@ -1,6 +1,6 @@
-Techdegree Project 3
+## Interactive form
 
-In this project only the content of script.js is original coding.The rest of the files are property of Treehouse Techdegree Full Stack JavaScript learning program
+![](/img/form-gif.gif)
 
 * This project contains a form for registering at Full Stack Conference.
 * The Project includes jQuery and has several sections

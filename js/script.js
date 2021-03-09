@@ -1,14 +1,4 @@
-/********************************************************************************************************** 
- Project 3 - Interactive Form 
- 
- In this project, is used JavaScript to enhance an interactive registration form for a fictional conference.
- Using the supplied HTML and CSS files from Treehouse, I have added my own JavaScript to make the form more
- user-friendly.In this project is used jQuery library.  
-***********************************************************************************************************/
-
-/****************
- Global varible(s)
-*****************/
+// Global varible(s)
 const $otherTitle =  $("#other-title");
 const $designField = $('#design');
 const $colorField = $('#color');
@@ -16,19 +6,10 @@ const $colorLabel = $('#colors-js-puns label');
 const $totalActivityLabel = $('<span></span>').css('color','darkred');
 var $activityCheckbox = $('input[type=checkbox]');
 
-/*******************************
- Focus method to the firs input
-********************************/
 $('#name').focus();
- 
-/*******************************
-  Hiding the 'Other' input field
-********************************/
+
 $otherTitle.css('display', 'none'); 
 
-/*************************************************************
-  Side down or up effect if 'Other' job role is selected or not
- *************************************************************/
 $("#title").change(function() {  
     if ($('#title').val() == "other") {   
         $otherTitle.slideDown(900);
@@ -38,18 +19,12 @@ $("#title").change(function() {
   }
 );
 
-/***********************************************************************************
-  Updating the color field and hidding it together with color label and Select Theme
-************************************************************************************/ 
-
+// Updating the color field 
 $colorField.hide();
 $colorLabel.hide();
 $('#design option:first').attr('hidden',true);
 
-/******************************************************** 
-  Listening for change in the #design 'select' element
-  and if the right theme is selected we show the colors
-*********************************************************/
+// Listen for changes
 $designField.change(() => {
     $colorField.prepend(new Option("Please select a Theme","select-color"));
     if ($designField.val() === 'js puns')  {
@@ -87,9 +62,7 @@ $designField.change(() => {
     }
 });
 
-/********************************** 
-  Register for Activities- section
-***********************************/
+//  Register for Activities- section
 $('.activities').append($totalActivityLabel);
 let $totalActivityCost = 0;
 
@@ -131,9 +104,7 @@ $('.activities').change((event) => {
     })
 });
 
-/***************** 
-  Payment Section
-******************/
+// Payment Section
 const $hideSelectPayment = $('option[value="select method"]').hide();
 const $paymentInfo = $('#payment');
 const $crediCard = $('option[value="Credit Card"]');
@@ -160,10 +131,7 @@ $paymentInfo.change(() => {
   }
 });
 
-/**************************************** 
-  Form Validation and Validation Messages
-*****************************************/
-// Error messages
+// Form Validation and Validation Messages
 var $nameErrorMsg = $('<label></label>').css('color','red');
 var $emailErrorMsg = $('<label></label>').css('color','red');
 var $activityErrorMsg = $('<label></label>').css('color','red');
@@ -171,7 +139,6 @@ var $ccErrorMsg = $('<label></label>').css('color','red');
 var $zipErrorMsg = $('<label></label>').css('color','red');
 var $cvvErrorMsg = $('<label></label>').css('color','red');
 
-// Hiding the error messages
 $nameErrorMsg.hide();
 $emailErrorMsg.hide();
 $activityErrorMsg.hide();
@@ -214,7 +181,6 @@ function validateActivity () {
   }
 };
 
-// Adding listener if any checkbox is checked, hide the error-msg
 $activityCheckbox.click(function () {
     $activityErrorMsg.hide();
 })
@@ -242,11 +208,7 @@ function validateSubmit (regex,selectItem,selectError,errorMsgElif,errorMsgElse)
   }
 };
 
-/***************************************************************** 
-  Form Event Checks that each field has the correct information
-  If the form has empty fields can't submit,and registration fails
-******************************************************************/
-
+// Form validaiton for right inputs
 $('form').submit(function (e){
  
   if (!validateSubmit(/^[a-zA-Z]*$/, $('#name'),$nameErrorMsg,"Name field can't be blank","Name should contain only Characters")) {
@@ -269,21 +231,21 @@ $('form').submit(function (e){
   };
 
   if ($paymentInfo.val() === 'Credit Card') {
-     if (!validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers")){
-        e.preventDefault();
-     } else {
-        $ccErrorMsg.hide();
-     };
-     if (!validateSubmit(/^[0-9]{5}$/, $('#zip'),$zipErrorMsg,"Insert Zip Code","Insert 5 digits")) {
-        e.preventDefault();
-     } else {
-        $zipErrorMsg.hide();
-     };
-     if (!validateSubmit(/^[0-9]{3}$/, $('#cvv'),$cvvErrorMsg,"Insert CVV Code","Insert 3 digits")) {
-        e.preventDefault();
-     } else {
-        $cvvErrorMsg.hide();
-     };  
+    if (!validateSubmit(/^[0-9]{13,16}$/, $('#cc-num'),$ccErrorMsg,"Insert Card Number","Insert minimum 13 numbers")){
+      e.preventDefault();
+    } else {
+      $ccErrorMsg.hide();
+    };
+    if (!validateSubmit(/^[0-9]{5}$/, $('#zip'),$zipErrorMsg,"Insert Zip Code","Insert 5 digits")) {
+      e.preventDefault();
+    } else {
+      $zipErrorMsg.hide();
+    };
+    if (!validateSubmit(/^[0-9]{3}$/, $('#cvv'),$cvvErrorMsg,"Insert CVV Code","Insert 3 digits")) {
+      e.preventDefault();
+    } else {
+      $cvvErrorMsg.hide();
+    };  
   } else if ($paymentInfo.val() === 'PayPal') {
       $('#bitcoin').attr('required',false);
   } else if ($paymentInfo.val() === 'Bitcoin') {
